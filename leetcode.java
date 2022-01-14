@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 //Contains Duplicate
 class Solution{
     public boolean containsDuplicate(int[] nums){
@@ -205,4 +207,205 @@ class Solution10{
     }
 }
 
-//
+//Palindrome Number
+class Solution11{
+    public boolean isPalindrome (int x){
+        if (x == 0){
+            return true;
+        }
+        if (x < 0 || x % 10 == 0){
+            return false;
+        }
+
+        int reversed = 0;
+        while (x > reversed){
+            int pop = x % 10;
+            x /= 10;
+
+            reversed = (reversed * 10)+ pop;
+        }
+        if (x == reversed || x == (reversed/10)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+
+
+// Reverse Integer
+//Stack
+class Solution12{
+    public int reverse(int x){
+
+        int reversed = 0;
+        int pop;
+        while (x != 0){
+            pop = x %10;
+            x /= 10;
+            reversed = (reversed * 10)+ pop;
+        }
+        return reversed;
+    }
+}
+
+//Maximum Depth of Binary Tree 
+//Height of tree
+
+class Solution13{
+    public int maxDepth(TreeNode root){
+        if (root == null){
+            return 0;
+        }
+
+        int left_depth = maxDepth(root.left)
+        int right_depth  = maxDepth(root.right)
+        return Math.max(left_depth, right_depth)+1
+    }
+}
+
+//isSymetric Tree 
+class Solution14{
+    public boolean isSymmetric (TreeNode root){
+        return isMirror(root, root);
+    }
+    public boolean isMirror(TreeNode t1, TreeNode t2){
+        if (t1 == null && t2 ==null){
+            return true;
+        }
+        if (t1 == null || t2 == null){
+            return false;
+        }
+        return (t1.val == t2.val) && isMirror (t1.left, t2.right) && isMirror(t1.right, t2.left);
+    }
+}
+
+//Path Sum Trees
+class Solution15{
+    public boolean hasPathSum(TreeNode root, int sum){
+        if (root==null){
+            return false;
+        }
+        Stack<TreeNode> node_stack = new Stack();
+        Stack<Integers> sum_stack = new Stack();
+
+        node_stack.add(root);
+        sum_stack.add(sum-root.val);
+
+        while(!node_stack.isEmpty()){
+            TreeNode current_node = node_stack.pop();
+            int current_sum = sum_stack.pop();
+
+            if (current_node.left == null && current_node.right == null &&current_sum ==0){
+                return true;
+            }
+            if (current_node.left != null){
+                node_stack.add(current_node.left);
+                sum_stack.add(current_sum - current_node.left.val);
+            }
+            if (current_node.right != null){
+                node_stack.add(current_node.right);
+                sum_stack.add(current_sum - current_node.right.val);
+            }
+        }
+        return false;
+    }
+}
+
+//Binary Search
+class Solution16{
+    public int search(int[] nums, int target){
+        if (nums.length == 0)return -1;
+
+        int left = 0;
+        int right = nums.length -1;
+
+        while (left <= right){
+            int midpoint = left +(right -left) /2;
+            if(nums[midpoint]==target){
+                return midpoint;
+            }
+            else if (nums[midpoint]> target){
+                right = midpoint -1;
+
+            }else {
+                left = midpoint + 1;
+
+            }
+        }
+        return -1;
+    }
+
+}
+
+
+//To Lower Case
+class Soltion17{
+    public String toLowerCase(String str){
+        String result = "";
+        for (Char c : str.toCharArray()){
+            if (Character.isUpperCase(c)){
+                result = result + (char)(c+32);
+            }
+            else {
+                result = result + c;
+            }
+        }
+        return result;
+    }
+}
+
+// Odd Even Linked list (medium)
+//1-2-3-4-5
+// output : 1-3-5-2-4
+//2-1-3-5-6-4-7
+//out : 2-3-6-7-1-5-4
+
+class Solution18{
+    public ListNode oddEvenList(ListNode head){
+
+        if (head==null){
+            return null;
+        }
+        ListNode odd = head;
+        ListNode even = head.next;
+        ListNode evenHead = even;
+
+        while (even != null && even.next != null){
+            odd.next = even.next;
+            odd = odd.next;
+            even.next = odd.next;
+            even = even.next;
+        }
+        odd.next = evenHead;
+        return head;
+
+    }
+}
+
+//First Bad Version
+//Binary Search
+
+class Solution19{
+    public int firstBadVersion(int n){
+
+        int left = 0;
+        int right = n;
+
+        while (left < right){
+            int midPoint = left + (right-left) /2;
+            if (isBadVersion(midPoint)){
+                right = midPoint;
+            }else{
+                left = midPoint + 1;
+            }
+        }
+        if (left == right && isBadVersion(left)){
+            return left;
+        }
+        return -1;
+    }
+    
+    
+}
+
