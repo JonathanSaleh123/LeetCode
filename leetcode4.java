@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 import javax.swing.tree.TreeNode;
 
@@ -76,3 +77,162 @@ class Solution42{
         get_widths(root.right, depth+1, position*2+1);
     }
 }
+
+//Flaten Binary Tree to Linked List
+class Solution43{
+    public void flatten(TreeNode root){
+        if(root == null){
+            return;
+        }
+        Stack<TreeNode> stack = new Stack();
+        stack.push(root);
+
+        while(!stack.isEmpty()){
+            TreeNode current_node = stack.pop();
+            if(current_node.right != null){
+                stack.push(current_node.right);
+            }
+            if(current_node.left !- null){
+                stack.push(current_node.left);
+            }
+            if(!stack.isEmpty()){
+                current_node.right = stack.peek();
+            }
+
+            current_node.left = null;
+        }
+    }   
+}
+
+//Binary Tree Right Side View
+class Solution44{
+    public List<Integer> rightSideView(TreeNode root){ 
+        List<Integer> result = new ArrayList();
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        if(root == null){
+            return result;
+        }
+        queue.offer(root);
+
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            for(int i = 0; i < size; i++){
+                TreeNode current_node = queue.poll();
+                if(i==0){
+                    result.add(current_node.val);
+                }
+                if(current_node.right != null){
+                    queue.offer(current_node.right);
+                }
+                if(current_node.left != null){
+                    queue.offer(current_node.left);
+                }
+            }
+        }
+        return result;
+
+    }
+}
+
+//Jewels and Stones
+class Solution45{
+    public int numJewelsIsInStones(String J, String S){
+        int num_jewels = 0;
+
+        for(int i = 0; i < S.length(); i++){
+            if(J.indexOf(S.charAt(i)) > -1){
+                num_jewels +=1;
+            }
+        }
+        return num_jewels;
+    }
+}
+
+//Sort Linked List (n log n)
+//Merge Sort
+class Solution46{
+    public ListNode sortList(ListNode head){
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode temp =head;
+        ListNode slow = head;
+        listNode fast = head;
+
+        while(fast != null && fast.next != null){
+            temp = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        temp.next = null;
+        ListNode left_side = sortList(head);
+        ListNode right_side = sortList(slow);
+
+        return merge(left_side, right_side);
+    }
+    public ListNode merge(ListNode l1, ListNode l2){
+
+        ListNode sorted_temp = ListNode(0);
+        ListNode current_node = sorted_temp;
+
+        while (l1 != null && l2 != null){
+            if (l1.val < l2.val){
+                current_node.next = l1;
+                l1 = l1.next;
+            }else{
+                current_node.next = l2;
+                l2 = l2.next;
+            }
+            current_node = current_node.next;
+        }
+
+        if(l1 != null){
+            current_node.next = l1;
+            l1 = l1.next;
+        }
+
+        if(l2 != null){
+            current_node.next = l2;
+            l2 = l2.next;
+        }
+    }
+}
+
+//Search in a binary search tree
+class Solution47{
+    public TreeNode searchBST(TreeNode root, int val){
+        if(root == null){
+            return null;
+        }
+        if(root.val == val){
+            return root;
+        }
+
+        if(val < root.val){
+            return searchBST(root.left, val);
+
+        }else{
+            return searchBST(root.right, val);
+        }
+    }
+}
+
+class Solution {
+    public int peakIndexInMountainArray(int[] A){
+        int left = 0;
+        int right = A.length -1;
+        while(left < right){
+            int midpoint = (left + (right-left)) /2;
+            if (A[midpoint] < A[midpoint]){
+                left = midpoint + 1;
+            }else{
+                right = midpoint;
+            }
+        }
+
+        return right;
+    }
+}
+
